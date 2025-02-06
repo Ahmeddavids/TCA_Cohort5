@@ -1,0 +1,27 @@
+[
+ {
+  "id": 1,
+  "name": "The Curve Africa",
+  "location": "Festac"
+ },
+ {
+  "name": "Havard University",
+  "location": "USA",
+  "id": 2
+ },
+ {
+  "name": "Unilag",
+  "location": "Nigeria",
+  "id": 3
+ },
+ {
+  "name": "MIT",
+  "location": "USA",
+  "id": 4
+ },
+ {
+  "name": "Nasa",
+  "location": "Togo",
+  "id": 5
+ }
+]
