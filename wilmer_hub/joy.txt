@@ -1,0 +1,3 @@
+Total Memory: 8465313792 bytes 
+Free Memory: 1633701888 bytes 
+Used Memory: 6831611904 bytes
