@@ -1,0 +1,15 @@
+{
+  "name": "wilmer_hub",
+  "version": "1.0.0",
+  "description": "First node class",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "JavaScript",
+    "node"
+  ],
+  "author": "Ahmed Davids",
+  "license": "ISC"
+}
