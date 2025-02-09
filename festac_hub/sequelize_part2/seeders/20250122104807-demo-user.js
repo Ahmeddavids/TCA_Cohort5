@@ -18,4 +18,4 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('FootballClubs', null, {});
   },
-};
+}; 
