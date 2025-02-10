@@ -1,4 +1,4 @@
-require('./config/database')
+require('./config/database');
 const express = require('express');
 
 const app = express();
