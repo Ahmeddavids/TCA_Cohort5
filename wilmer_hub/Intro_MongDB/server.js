@@ -1,5 +1,6 @@
 require('./config/database')
 const express = require('express');
+
 const app = express();
 const studentRouter = require('./routes/studentRouter');
 const PORT = 2121;
