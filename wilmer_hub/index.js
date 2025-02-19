@@ -75,7 +75,7 @@ console.log(result);
 // console.log(fruits);
 
 const school = 'The Curve Africa'
-// console.log(school.length);
+console.log(school.length);
 
 // numbers.find((e) => {
 //     console.log(e > 18)
