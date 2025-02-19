@@ -130,7 +130,7 @@ console.log();
 
 
 
-// const adult = numbers.filter((e) => e >= 18  );
+const adult = numbers.filter((e) => e >= 18  );
 // const Facilitator = {
 //     name: 'Ahmed',
 //     gender: 'Male',
