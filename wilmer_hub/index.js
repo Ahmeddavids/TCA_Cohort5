@@ -67,7 +67,7 @@ if (names.includes('Christopher')) {
 }
 
 let result = numbers.splice()
-// console.log(result);
+console.log(result);
 
 // const fruits = ["Banana", "Orange", "Apple", "Mango"];
 // fruits.splice(2, 0);
