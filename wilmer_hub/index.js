@@ -131,11 +131,11 @@ console.log();
 
 
 const adult = numbers.filter((e) => e >= 18  );
-// const Facilitator = {
-//     name: 'Ahmed',
-//     gender: 'Male',
-//     score: 15
-// }
+const Facilitator = {
+    name: 'Ahmed',
+    gender: 'Male',
+    score: 15
+}
 
 
 // console.log(students.at(0));
