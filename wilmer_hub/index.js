@@ -58,13 +58,13 @@ names.forEach((chinansa) => {
 
 console.log();
 
-// if (names.includes('Christopher')) {
-//     console.log('He is Present');
+if (names.includes('Christopher')) {
+    console.log('He is Present');
     
-// } else{
-//     console.log('He is Absent');
+} else{
+    console.log('He is Absent');
     
-// }
+}
 
 // let result = numbers.splice()
 // // console.log(result);
