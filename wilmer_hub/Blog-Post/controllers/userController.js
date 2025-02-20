@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
         })
     };
     const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
-    const {userPassword, ...userData} = user
+    // const {password, ...userData} = user
 
     // Send a success response
     res.status(200).json({
@@ -78,7 +78,6 @@ exports.login = async (req, res) => {
             id: user._id,
             profilePic: user.profilePic,
         },
-        token,
-        userData
+        token
     })
 }
