@@ -136,7 +136,7 @@ exports.verifyUser = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-
+        const {email, password} = req.body;
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
