@@ -144,7 +144,7 @@ exports.login = async (req, res) => {
             });
         };
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (isPasswordCorrect === false){
+        if (isPasswordCorrect === false) {
             return res.status(404).json({
                 message: 'Incorrect password'
             });
