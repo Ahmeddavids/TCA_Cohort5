@@ -154,6 +154,7 @@ exports.login = async (req, res) => {
                 message: 'Account not verified, Please check your email for verification link'
             });
         }
+        const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1day'});
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
