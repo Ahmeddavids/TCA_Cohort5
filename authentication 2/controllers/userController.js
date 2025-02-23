@@ -149,6 +149,11 @@ exports.login = async (req, res) => {
                 message: 'Incorrect password'
             });
         };
+        if (user.isVerified === false){
+            return res.status(400).json({
+                message: 'Account not verified, Please check your email for verification link'
+            });
+        }
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
