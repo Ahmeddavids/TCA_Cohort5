@@ -137,6 +137,7 @@ exports.verifyUser = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
+        const user = await userModel.findOne({email: email.toLowerCase()})
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
