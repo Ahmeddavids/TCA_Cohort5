@@ -149,15 +149,15 @@ exports.login = async (req, res) => {
                 message: 'Incorrect password'
             });
         };
-        if (user.isVerified === false){
+        if (user.isVerified === false) {
             return res.status(400).json({
                 message: 'Account not verified, Please check your email for verification link'
             });
         }
-        const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1day'});
+        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1day' });
         res.status(200).json({
             message: 'Login successful',
-            data:user
+            data: user
         })
     } catch (error) {
         console.log(error.message)
