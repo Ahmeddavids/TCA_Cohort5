@@ -143,6 +143,8 @@ exports.login = async (req, res) => {
                 message: 'User not found'
             });
         };
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
