@@ -137,7 +137,12 @@ exports.verifyUser = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await userModel.findOne({ email: email.toLowerCase() })
+        const user = await userModel.findOne({ email: email.toLowerCase() });
+        if (user === null) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        };
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
