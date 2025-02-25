@@ -105,44 +105,85 @@ exports.login = async (req, res) => {
 
 exports.verifyEmail = async (req, res) => {
     try {
-        // Extract token from params;
+        // Extract token from params
         const { token } = req.params;
-        // Check if token is not available
         if (!token) {
             return res.status(400).json({
-                message: 'Token  not found'
-            })
-        };
-        // Verify the token
-        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
-        // Find the user by the decoded token ID
-        const user = await userModel.findById(decodedToken.userId);
-        // Throw an Error if user is not found
-        if (!user) {
-            return res.status(404).json({
-                message: 'User not found'
-            })
-        };
-        // Update the IsVerified field to True
-        user.isVerified = true;
-        // Save the changes to the database
-        await user.save()
-        // Send a success response
-        res.status(200).json({
-            message: 'User verified successfully'
-        })
-    } catch (error) {
-        console.log(error.message)
-        if (error instanceof jwt.JsonWebTokenError) {
-            return res.status(401).json({
-                message: 'Verification link expired'
-            })
+                message: 'Token not found'
+            });
         }
+
+        // Verify the token
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+            if (err) {
+                // Token expired or invalid, send a new verification email
+                if (err instanceof jwt.TokenExpiredError) {
+                    const decoded = jwt.decode(token)
+                    console.log(decoded)
+                    const user = await userModel.findById(decoded.userId);
+
+                    if (!user) {
+                        return res.status(404).json({
+                            message: 'User not found'
+                        });
+                    }
+
+                    // Create a new token for the user
+                    const newToken = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+                    // Configure the new verification link
+                    const link = `${req.protocol}://${req.get('host')}/api/v1/user-verify/${newToken}`;
+                    const firstName = user.fullName.split(' ')[0];
+                    const html = signUpTemplate(link, firstName);
+
+                    // Send the user an email
+                    const mailOptions = {
+                        subject: 'New Email Verification',
+                        email: user.email,
+                        html
+                    };
+
+                    // Await the nodemailer to send the email to the user
+                    await sendEmail(mailOptions);
+
+                    // Send a success response
+                    return res.status(200).json({
+                        message: 'Verification link expired. A new verification email has been sent to your inbox.'
+                    });
+                }
+
+                // Handle other JWT verification errors
+                return res.status(400).json({
+                    message: 'Invalid or malformed token'
+                });
+            }
+
+            // If the tken is valid, proceed with user verification
+            const user = await userModel.findById(decodedToken.userId);
+            if (!user) {
+                return res.status(404).json({
+                    message: 'User not found'
+                });
+            }
+
+            // Update the user's verification status
+            user.isVerified = true;
+            // Save the changes to the database
+            await user.save();
+
+            // Send a success response
+            return res.status(200).json({
+                message: 'User verified successfully'
+            });
+        });
+    } catch (error) {
+        console.log(error.message);
         res.status(500).json({
-            message: 'Error verifying User: ' + error.message
-        })
+            message: 'Error verifying user: ' + error.message
+        });
     }
-}
+};
+
 
 exports.resendVerificationEmail = async (req, res) => {
     try {
