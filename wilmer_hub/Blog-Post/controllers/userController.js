@@ -168,6 +168,54 @@ exports.forgotPassword = async (req, res) => {
     }
 };
 
+exports.resetPassword = async (req, res) => {
+    try {
+        // Extract the token from the params
+        const { token } = req.params;
+        // Extract the passwod and confirm password from the request body
+        const { password, confirmPassword } = req.body;
+        // Verify if the token is still valid
+        const { userId } = await jwt.verify(token, process.env.JWT_SECRET);
+        // Check if the user is still existsing
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            })
+        }
+        // Confirm that the password matches
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                message: 'Password does not match'
+            })
+        }
+        // Generate a salt and hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        // Update the user's password to the new password
+        user.password = hashedPassword;
+
+        // Save the changes to the database
+        await user.save();
+
+        // Send a success response
+        res.status(200).json({
+            message: 'Password reset successful'
+        })
+
+    } catch (error) {
+        console.log(error.message)
+        if (error instanceof jwt.JsonWebTokenError) {
+            res.status(400).json({
+                message: 'Link expired, Please initiate a link'
+            })
+        }
+        res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+}
+
 // exports.login = async (req, res) => {
 //     // Extract the Email and Password from the request body
 //     const { email, password } = req.body;
