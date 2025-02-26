@@ -124,6 +124,50 @@ exports.verifyUser = async (req, res) => {
     }
 }
 
+// Forgot Password
+exports.forgotPassword = async (req, res) => {
+    try {
+        // Get the email from the request body
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                message: 'Please input your email'
+            })
+        }
+        //  Check for the user
+        const user = await userModel.findOne({ email: email.toLowerCase() });
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            })
+        }
+        // Generate a token for the user
+        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '10mins' });
+        // Create the reset link
+        const link = `${req.protocol}://${req.get('host')}/api/v1/initiate/recover/${token}`;
+        const firstName = user.fullName.split(' ')[0];
+        // configure the email details
+        const mailDetails = {
+            subject: 'Password Reset',
+            email: user.email,
+            html: forgotTemplate(link, firstName)
+        }
+        // Await nodemailer to send the user an email
+        await sendEmail(mailDetails);
+
+        // Send a success response
+        res.status(200).json({
+            message: 'Password reset initiated, Please check your email for the reset link'
+        })
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+};
+
 // exports.login = async (req, res) => {
 //     // Extract the Email and Password from the request body
 //     const { email, password } = req.body;
