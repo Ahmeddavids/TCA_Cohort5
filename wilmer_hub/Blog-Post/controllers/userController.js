@@ -216,6 +216,52 @@ exports.resetPassword = async (req, res) => {
     }
 }
 
+
+exports.login = async (req, res) => {
+    try {
+        const { email, username, password } = req.body;
+        if (!email && !username) {
+            return res.status(404).json({
+                message: 'Please enter either email or username'
+            });
+        }
+        if (!password) {
+            return res.status(404).json({
+                message: 'Please enter your password'
+            });
+        }
+        const user = await userModel.findOne({ $or: [{ email }, { username: username.toLowerCase() }] });
+        if (user === null) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        };
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (isPasswordCorrect === false) {
+            return res.status(404).json({
+                message: 'Incorrect password'
+            });
+        };
+        if (user.isVerified === false) {
+            return res.status(400).json({
+                message: 'Account not verified, Please check your email for verification link'
+            });
+        }
+        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '15min' });
+        // Send a response
+        res.status(200).json({
+            message: 'Login successful',
+            data: user,
+            token
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+}
+
 // exports.login = async (req, res) => {
 //     // Extract the Email and Password from the request body
 //     const { email, password } = req.body;
