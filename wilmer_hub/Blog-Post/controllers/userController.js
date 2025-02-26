@@ -239,81 +239,35 @@ exports.resetPassword = async (req, res) => {
 
 
 exports.login = async (req, res) => {
-    try {
-        const { email, username, password } = req.body;
-        if (!email && !username) {
-            return res.status(404).json({
-                message: 'Please enter either email or username'
-            });
-        }
-        if (!password) {
-            return res.status(404).json({
-                message: 'Please enter your password'
-            });
-        }
-        const user = await userModel.findOne({ $or: [{ email }, { username: username.toLowerCase() }] });
-        if (user === null) {
-            return res.status(404).json({
-                message: 'User not found'
-            });
-        };
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (isPasswordCorrect === false) {
-            return res.status(404).json({
-                message: 'Incorrect password'
-            });
-        };
-        if (user.isVerified === false) {
-            return res.status(400).json({
-                message: 'Account not verified, Please check your email for verification link'
-            });
-        }
-        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '15min' });
-        // Send a response
-        res.status(200).json({
-            message: 'Login successful',
-            data: user,
-            token
+    // Extract the Email and Password from the request body
+    const { email, password } = req.body;
+    // First thing is to check if the user is registred in the database
+    const user = await userModel.findOne({email: email.toLowerCase()});
+    // Throw an Error is the User is not existing
+    if(user === null){
+        return res.status(404).json({
+            message: `User with Email: ${email} does not exist.`
         })
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).json({
-            message: 'Internal Server Error'
+    };
+    // Conpare the password if it corresponds with the one saved in the database
+    const passwordCorrect = await bcrypt.compare(password, user.password);
+    // Throw an error if the password does not match
+    if (passwordCorrect === false){
+        return res.status(400).json({
+            message: 'Incorrect password entered'
         })
-    }
+    };
+    const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+
+    // Send a success response
+    res.status(200).json({
+        message: 'Login successful',
+        data: {
+            fullName: user.fullName,
+            email: user.email,
+            id: user._id,
+            profilePic: user.profilePic,
+        },
+        token
+    })
 }
-
-// exports.login = async (req, res) => {
-//     // Extract the Email and Password from the request body
-//     const { email, password } = req.body;
-//     // First thing is to check if the user is registred in the database
-//     const user = await userModel.findOne({email: email.toLowerCase()});
-//     // Throw an Error is the User is not existing
-//     if(user === null){
-//         return res.status(404).json({
-//             message: `User with Email: ${email} does not exist.`
-//         })
-//     };
-//     // Conpare the password if it corresponds with the one saved in the database
-//     const passwordCorrect = await bcrypt.compare(password, user.password);
-//     // Throw an error if the password does not match
-//     if (passwordCorrect === false){
-//         return res.status(400).json({
-//             message: 'Incorrect password entered'
-//         })
-//     };
-//     const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
-//     // const {password, ...userData} = user
-
-//     // Send a success response
-//     res.status(200).json({
-//         message: 'Login successful',
-//         data: {
-//             fullName: user.fullName,
-//             email: user.email,
-//             id: user._id,
-//             profilePic: user.profilePic,
-//         },
-//         token
-//     })
-// }
