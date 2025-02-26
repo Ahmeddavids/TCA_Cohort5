@@ -3,7 +3,11 @@ const cloudinary = require('../config/cloudinary');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const { signUpTemplate, forgotTemplate } = require('../utils/mailTemplates');
+const { sendEmail } = require('../middleware/nodemailer');
 
+
+// Register user
 exports.register = async (req, res) => {
     try {
         const { fullName, email, password } = req.body;
@@ -15,8 +19,7 @@ exports.register = async (req, res) => {
                 message: `User with Email: ${email} already exists`
             })
         };
-
-        console.log('I Got Here');
+        
         const result = await cloudinary.uploader.upload(req.file.path);
         fs.unlinkSync(req.file.path);
 
@@ -33,16 +36,34 @@ exports.register = async (req, res) => {
             }
         });
 
-        await user.save();
+        // Generate a tokem for the user
+        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '5mins' });
+        // Generate the verifying link
+        const link = `${req.protocol}://${req.get('host')}/api/v1/user-verify/${token}`;
+        // Dynamically get the User's firstname from the Fullname
+        const firstName = user.fullName.split(' ')[0]
 
-        res.status(200).json({
-            message: 'User Registered successfully',
+        // Configure the email sending details
+        const mailDetails = {
+            email: user.email,
+            subject: 'Welcome mail',
+            html: signUpTemplate(link, firstName)
+        }
+
+        // Await nodemailer to send the user an email
+        await sendEmail(mailDetails);
+        // Save the user document to the database
+        await user.save()
+
+        res.status(201).json({
+            message: 'User registered successfully',
             data: user
-        })
+        });
 
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({
-            message: 'Internal Server Error: ' + error.message
+            message: 'Internal Server Error'
         })
     }
 }
