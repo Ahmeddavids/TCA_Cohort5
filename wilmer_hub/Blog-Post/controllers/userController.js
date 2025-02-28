@@ -269,4 +269,4 @@ exports.login = async (req, res) => {
         },
         token
     })
-}
+};
