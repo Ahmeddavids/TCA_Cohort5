@@ -37,7 +37,7 @@ exports.register = async (req, res) => {
         });
 
         // Generate a tokem for the user
-        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '5mins' });
+        const token = await jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '10mins' });
         // Generate the verifying link
         const link = `${req.protocol}://${req.get('host')}/api/v1/user-verify/${token}`;
         // Dynamically get the User's firstname from the Fullname
