@@ -257,7 +257,7 @@ exports.login = async (req, res) => {
             message: 'Incorrect password entered'
         })
     };
-    const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+    const token = await jwt.sign({userId: user._id, }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
     // Send a success response
     res.status(200).json({
