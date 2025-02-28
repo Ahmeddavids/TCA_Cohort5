@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1',postRouter);
-app.use('api/v1',userRouter);
+app.use('/api/v1',userRouter);
 
 app.listen(PORT, ()=> {
     console.log(`Server is listening to PORT: ${PORT}`)
