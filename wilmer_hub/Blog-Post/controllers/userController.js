@@ -237,7 +237,6 @@ exports.resetPassword = async (req, res) => {
     }
 }
 
-
 exports.login = async (req, res) => {
     // Extract the Email and Password from the request body
     const { email, password } = req.body;
