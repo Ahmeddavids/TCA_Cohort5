@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(postRouter);
+app.use('/api/v1',postRouter);
 app.use(userRouter);
 
 app.listen(PORT, ()=> {
