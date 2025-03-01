@@ -9,10 +9,7 @@ exports.authenticate = async (req, res, next) => {
         }
         // Make sure the token is a valid JWT token
         const token = auth.split(' ')[1];
-        if (!token) {
-            return res.status(400).json({
-                message: 'Invalid Token'
-            })
+        if (!token) {return res.status(400).json({message: 'Invalid Token'})
         }
         // Verify the token to be sure it's still valid
         const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
