@@ -5,10 +5,7 @@ exports.authenticate = async (req, res, next) => {
     try {
         // Get the Token from the authorization headers
         const auth = req.headers.authorization;
-        if (!auth) {
-            return res.status(400).json({
-                message: 'Token not found'
-            })
+        if (!auth) {return res.status(400).json({message: 'Token not found'})
         }
         // Make sure the token is a valid JWT token
         const token = auth.split(' ')[1];
