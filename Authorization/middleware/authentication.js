@@ -21,8 +21,8 @@ exports.authenticate = async (req, res, next) => {
 
     } catch (error) {
         console.log(error.message)
-        if (error instanceof jwt.JsonWebTokenError) {return res.status(400).json({message: 'Session timed-out, Please login to continue'})}
-        res.status(500).json({message: 'Internal Server Error'})
+        if (error instanceof jwt.JsonWebTokenError) { return res.status(400).json({ message: 'Session timed-out, Please login to continue' }) }
+        res.status(500).json({ message: 'Internal Server Error' })
     }
 }
 
