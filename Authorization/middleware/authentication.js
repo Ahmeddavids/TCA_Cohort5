@@ -38,8 +38,7 @@ exports.authenticateAdmin = async (req, res, next) => {
         const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
         // Check if the user is still existing
         const user = await userModel.findById(decodedToken.userId);
-        if (!user) {
-            return res.status(400).json({
+        if (!user) {return res.status(400).json({
                 message: 'Authentication Failed: User not found'
             })
         }
