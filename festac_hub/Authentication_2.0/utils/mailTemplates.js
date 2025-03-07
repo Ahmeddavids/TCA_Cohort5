@@ -75,8 +75,9 @@ exports.signUpTemplate = (link, name) => {
                 <p>Thank you for signing up on Ahmed Davids cohort 5 class. We are excited to have you on board.</p>
                 <p>Please click the button below to verify your account:</p>
                 <div class="button-container">
-                    <a href="${link}" class="button">Verify My Account</a>
+                <a href="${link}" class="button">Verify My Account</a>
                 </div>
+                <p>Link expires in 10 minutes</p>
                 <p>If you did not sign up on our platform, kindly ignore this email.</p>
                 <p>Best regards,<br>TCA team</p>
             </div>
