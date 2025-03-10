@@ -39,3 +39,17 @@ exports.createCategory = async (req, res) => {
     }
 }
 
+exports.getAll = async(req,res)=>{
+    try {
+        const categories = await categoryModel.find();
+        res.status(200).json({
+            message: 'All Categories in the database',
+            data: categories
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'Internal Server Error'
+        })
+    }
+}
