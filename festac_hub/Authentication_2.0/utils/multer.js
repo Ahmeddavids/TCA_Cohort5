@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype == 'image/' || file.mimetype == 'application/json') {
+    // Allows Images and Documents
+    if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('application/')) {
         cb(null, true)
     } else {
         cb(new Error('Invalid file format: Image Only'))
