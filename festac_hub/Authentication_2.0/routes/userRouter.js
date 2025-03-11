@@ -1,9 +1,10 @@
 const { register, verifyUser, resendVerificationEmail, login, getAll, makeAdmin } = require('../controllers/userController');
 const { authenticate, superAdminAuth } = require('../middlewares/authentication');
+const { registerValidation } = require('../middlewares/validator');
 
 const router = require('express').Router();
 
-router.post('/register', register);
+router.post('/register', registerValidation, register);
 
 router.get('/verify-user/:token', verifyUser);
 
