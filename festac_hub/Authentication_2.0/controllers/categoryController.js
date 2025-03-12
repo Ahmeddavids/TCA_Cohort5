@@ -41,7 +41,7 @@ exports.createCategory = async (req, res) => {
 
 exports.getAll = async(req,res)=>{
     try {
-        const categories = await categoryModel.find();
+        const categories = await categoryModel.find().populate('rooms',['roomName','price', 'description']);
         res.status(200).json({
             message: 'All Categories in the database',
             data: categories
