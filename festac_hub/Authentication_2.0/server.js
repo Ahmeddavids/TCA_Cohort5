@@ -26,6 +26,11 @@ app.use('/api/v1', roomRouter);
 app.use('/api/v1', categoryRouter);
 app.use('/api/v1', userRouter);
 
+app.listen(PORT, () => {
+    console.log(`Server is listening to PORT: ${PORT}`)
+})
+
+
 // const UAParser = require('ua-parser-js');
 // const useragent = require('express-useragent');
 
@@ -69,8 +74,3 @@ app.use('/api/v1', userRouter);
 //         res.status(500).json({ message: "Internal Server Error" });
 //     }
 // });
-
-
-app.listen(PORT, () => {
-    console.log(`Server is listening to PORT: ${PORT}`)
-})
