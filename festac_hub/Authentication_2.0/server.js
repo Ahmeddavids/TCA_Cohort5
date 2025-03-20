@@ -26,49 +26,49 @@ app.use('/api/v1', roomRouter);
 app.use('/api/v1', categoryRouter);
 app.use('/api/v1', userRouter);
 
-const UAParser = require('ua-parser-js');
-const useragent = require('express-useragent');
+// const UAParser = require('ua-parser-js');
+// const useragent = require('express-useragent');
 
-app.get('/device-info', (req, res) => {
-    try {
-        const parser = new UAParser(req.headers['user-agent']);
-        const userAgent = useragent.parse(req.headers['user-agent']);
+// app.get('/device-info', (req, res) => {
+//     try {
+//         const parser = new UAParser(req.headers['user-agent']);
+//         const userAgent = useragent.parse(req.headers['user-agent']);
 
-        // Extract Device Information
-        const deviceInfo = {
-            ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip,
-            browser: {
-                name: parser.getBrowser().name || "Unknown",
-                version: parser.getBrowser().version || "Unknown"
-            },
-            os: {
-                name: parser.getOS().name || "Unknown",
-                version: parser.getOS().version || "Unknown"
-            },
-            device: {
-                type: userAgent.isMobile ? "Mobile" : userAgent.isTablet ? "Tablet" : "Desktop",
-                vendor: parser.getDevice().vendor || "Unknown",
-                model: parser.getDevice().model || "Unknown",
-                architecture: parser.getCPU().architecture || "Unknown"
-            },
-            network: {
-                isProxy: req.headers['via'] ? true : false,
-                isVPN: req.headers['x-vpn'] ? true : false // Custom headers from some VPNs
-            },
-            language: req.headers['accept-language'] || "Unknown",
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
-            headers: req.headers // Include all headers for debugging/testing
-        };
+//         // Extract Device Information
+//         const deviceInfo = {
+//             ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip,
+//             browser: {
+//                 name: parser.getBrowser().name || "Unknown",
+//                 version: parser.getBrowser().version || "Unknown"
+//             },
+//             os: {
+//                 name: parser.getOS().name || "Unknown",
+//                 version: parser.getOS().version || "Unknown"
+//             },
+//             device: {
+//                 type: userAgent.isMobile ? "Mobile" : userAgent.isTablet ? "Tablet" : "Desktop",
+//                 vendor: parser.getDevice().vendor || "Unknown",
+//                 model: parser.getDevice().model || "Unknown",
+//                 architecture: parser.getCPU().architecture || "Unknown"
+//             },
+//             network: {
+//                 isProxy: req.headers['via'] ? true : false,
+//                 isVPN: req.headers['x-vpn'] ? true : false // Custom headers from some VPNs
+//             },
+//             language: req.headers['accept-language'] || "Unknown",
+//             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
+//             headers: req.headers // Include all headers for debugging/testing
+//         };
 
-        res.status(200).json({
-            message: "Device Information Retrieved",
-            deviceInfo
-        });
-    } catch (error) {
-        console.error("Error fetching device info:", error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
+//         res.status(200).json({
+//             message: "Device Information Retrieved",
+//             deviceInfo
+//         });
+//     } catch (error) {
+//         console.error("Error fetching device info:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// });
 
 
 app.listen(PORT, () => {
