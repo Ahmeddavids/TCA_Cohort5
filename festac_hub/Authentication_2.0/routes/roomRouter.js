@@ -1,4 +1,5 @@
 const { createRoom } = require('../controllers/roomController');
+const { authenticate, adminAuth } = require('../middlewares/authentication');
 const upload = require('../utils/multer');
 
 const router = require('express').Router();
@@ -59,6 +60,6 @@ const router = require('express').Router();
  *         description: Internal Server Error.
  */
 
-router.post('/room/:id', upload.array('images', 10), createRoom);
+router.post('/room/:id', authenticate, adminAuth, upload.array('images', 10), createRoom);
 
 module.exports = router;
