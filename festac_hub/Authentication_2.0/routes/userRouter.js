@@ -14,6 +14,20 @@ const router = require('express').Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Admin
+ *   description: Endpoints for admin management
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: Endpoints for user authentication
+ */
+
+/**
+ * @swagger
  * /api/v1/register:
  *   post:
  *     summary: Register a new user
@@ -178,11 +192,50 @@ router.post('/resend-verification', resendVerificationEmail);
  *         description: Internal Server Error.
  */
 
-
 router.get('/users', authenticate, getAll);
 
-router.patch('/make-admin/:id', authenticate, superAdminAuth, makeAdmin);
+/**
+ * @swagger
+ * /api/v1/make-admin/{id}:
+ *   patch:
+ *     summary: Make a user an admin
+ *     description: Grants admin privileges to a user. **Requires authentication and Super Admin role.**
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []  # Requires authentication
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to be made an admin
+ *     responses:
+ *       200:
+ *         description: User successfully promoted to admin.
+ *       400:
+ *         description: User is already an admin.
+ *       401:
+ *         description: Unauthorized - No token provided or insufficient privileges.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 
+router.patch('/make-admin/:id', authenticate, superAdminAuth, makeAdmin);
+/**
+ * @swagger
+ * /api/v1/google-authenticate:
+ *   get:
+ *     summary: Google Authentication
+ *     description: Redirects to Google's authentication page. **No authentication required.**
+ *     tags: [User]
+ *     security: []  # No authentication required
+ *     responses:
+ *       302:
+ *         description: Redirects to Google authentication.
+ */
 router.get('/google-authenticate', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/auth/google/login', passport.authenticate('google'), async (req, res) => {
@@ -197,7 +250,7 @@ router.get('/auth/google/login', passport.authenticate('google'), async (req, re
 
 /**
  * @swagger
- * /:
+ * /api/v1:
  *   get:
  *     summary: The Home Page of the app
  *     description: Returns a welcome message from Cloud View Hotel.
@@ -214,7 +267,7 @@ router.get('/auth/google/login', passport.authenticate('google'), async (req, re
  *               example: Welcome to the Cloud View Hotel Home Page
  */
 
-router.get('/', (req, res) => {
+router.get('/api/v1', (req, res) => {
     res.send('Welcome to the Cloud View Hotel Home Page');
 });
 
