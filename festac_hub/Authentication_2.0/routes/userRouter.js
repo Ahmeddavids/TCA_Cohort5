@@ -30,4 +30,28 @@ router.get('/auth/google/login', passport.authenticate('google'), async (req, re
     });
 })
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: The Home Page of the app
+ *     description: Returns a welcome message from Cloud View Hotel.
+ *     security: []  # This ensures the route is public (no authentication required)
+ *     tags:
+ *       - Home
+ *     responses:
+ *       200:
+ *         description: Successfully loads the home page.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Welcome to the Cloud View Hotel Home Page
+ */
+
+router.get('/', (req, res) => {
+    res.send('Welcome to the Cloud View Hotel Home Page');
+});
+
+
 module.exports = router

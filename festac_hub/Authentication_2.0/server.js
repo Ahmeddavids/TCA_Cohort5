@@ -7,7 +7,9 @@ const PORT = process.env.PORT;
 const secret = process.env.EXPRESS_SESSION_SECRET;
 const session = require('express-session');
 const passport = require('passport');
-require('./middlewares/passport')
+require('./middlewares/passport');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 
 const app = express();
@@ -21,6 +23,53 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+        title: 'Cloud View Documentation',
+        version: '1.0.0',
+        description:
+            'Documentation for Cloud View Hotel API for TCA Cohort 5',
+        license: {
+            name: 'Licensed Under MIT',
+            url: 'https://spdx.org/licenses/MIT.html',
+        },
+        contact: {
+            name: 'Ahmed Davids',
+            url: 'https://jsonplaceholder.typicode.com',
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    security: [{ BearerAuth: [] }],
+    servers: [
+        {
+            url: 'http://localhost:8080',
+            description: 'Production server',
+        },
+        {
+            url: 'http://localhost:1458',
+            description: 'Development server',
+        },
+    ],
+};
+
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['./routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/v1', roomRouter);
 app.use('/api/v1', categoryRouter);
