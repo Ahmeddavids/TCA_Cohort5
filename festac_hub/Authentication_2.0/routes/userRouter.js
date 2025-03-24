@@ -98,10 +98,86 @@ router.post('/register', registerValidation, register);
 
 router.get('/verify-user/:token', verifyUser);
 
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Endpoints related to user authentication and management
+ */
+
+/**
+ * @swagger
+ * /api/v1/login:
+ *   post:
+ *     summary: Login user
+ *     description: Authenticates a user and returns a token.
+ *     tags: [User]
+ *     security: []  # No authentication required
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: johndoe@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: StrongPassword123!
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Login successful
+ *                 data:
+ *                   type: object
+ *                 token:
+ *                   type: string
+ *                   example: jwt_token_here
+ *       400:
+ *         description: Invalid password or missing credentials.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 
 router.post('/login', login);
 
 router.post('/resend-verification', resendVerificationEmail);
+
+
+/**
+ * @swagger
+ * /api/v1/users:
+ *   get:
+ *     summary: Get all users
+ *     description: Returns a list of all registered users. **Requires authentication.**
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []  # Authentication required
+ *     responses:
+ *       200:
+ *         description: Returns all users in the database.
+ *       401:
+ *         description: Unauthorized - No token provided or invalid token.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
 
 router.get('/users', authenticate, getAll);
 
