@@ -5,10 +5,99 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const router = require('express').Router();
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Endpoints related to user authentication
+ */
+
+/**
+ * @swagger
+ * /api/v1/register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Creates a new user account and sends a verification email.
+ *     tags: [User]
+ *     security: []  # No authentication required
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fullName
+ *               - email
+ *               - password
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: johndoe@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: StrongPassword123!
+ *     responses:
+ *       200:
+ *         description: User registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User registered successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     fullName:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ *       400:
+ *         description: Email already in use.
+ *       500:
+ *         description: Internal Server Error.
+ */
 
 router.post('/register', registerValidation, register);
 
+/**
+ * @swagger
+ * /api/v1/verify-user/{token}:
+ *   get:
+ *     summary: Verify user email
+ *     description: Verifies a user's email using the token sent via email.
+ *     tags: [User]
+ *     security: []  # No authentication required
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The verification token sent to the user's email.
+ *     responses:
+ *       200:
+ *         description: Account verified successfully.
+ *       400:
+ *         description: User already verified.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
 router.get('/verify-user/:token', verifyUser);
+
 
 router.post('/login', login);
 
