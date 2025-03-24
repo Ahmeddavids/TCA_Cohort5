@@ -32,8 +32,8 @@ const swaggerDefinition = {
         description:
             'Documentation for Cloud View Hotel API for TCA Cohort 5',
         license: {
-            name: 'Licensed Under MIT',
-            url: 'https://spdx.org/licenses/MIT.html',
+            name: 'Base URL: https://davids@render.com',
+            // url: 'https://spdx.org/licenses/MIT.html',
         },
         contact: {
             name: 'Ahmed Davids',
@@ -65,11 +65,34 @@ const swaggerDefinition = {
 const options = {
     swaggerDefinition,
     // Paths to files containing OpenAPI definitions
-    apis: ['./routes/*.js'],
+    apis: ['./routes/*.js','server.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: The Home Page of the app
+ *     description: Returns a welcome message from Cloud View Hotel.
+ *     security: []  # This ensures the route is public (no authentication required)
+ *     tags:
+ *       - Home
+ *     responses:
+ *       200:
+ *         description: Successfully loads the home page.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Welcome to the Cloud View Hotel Home Page
+ */
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the Cloud View Hotel Home Page');
+});
 
 app.use('/api/v1', roomRouter);
 app.use('/api/v1', categoryRouter);
