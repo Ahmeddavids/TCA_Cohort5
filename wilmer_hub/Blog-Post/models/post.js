@@ -20,6 +20,14 @@ const postSchema = new mongoose.Schema({
     commentIds: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Comments'
+    }],
+    reactions: [{
+        username: String,
+        userId: { type: mongoose.SchemaTypes.ObjectId, ref: 'Users' },
+        reaction: {
+            type: String,
+            enum: ['Like', 'Love', 'Care', 'Haha', 'Sad', 'Wow', 'Angry']
+        }
     }]
 }, { timestamps: true });
 
