@@ -21,13 +21,6 @@ const router = require('express').Router();
 
 /**
  * @swagger
- * tags:
- *   name: Authentication
- *   description: Endpoints for user authentication
- */
-
-/**
- * @swagger
  * /api/v1/register:
  *   post:
  *     summary: Register a new user
@@ -182,7 +175,7 @@ router.post('/resend-verification', resendVerificationEmail);
  *     description: Returns a list of all registered users. **Requires authentication.**
  *     tags: [User]
  *     security:
- *       - bearerAuth: []  # Authentication required
+ *       - BearerAuth: []  # Authentication required
  *     responses:
  *       200:
  *         description: Returns all users in the database.
@@ -202,7 +195,7 @@ router.get('/users', authenticate, getAll);
  *     description: Grants admin privileges to a user. **Requires authentication and Super Admin role.**
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []  # Requires authentication
+ *       - BearerAuth: []  # Requires authentication
  *     parameters:
  *       - in: path
  *         name: id
