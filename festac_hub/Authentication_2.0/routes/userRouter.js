@@ -107,13 +107,6 @@ router.get('/verify-user/:token', verifyUser);
 
 /**
  * @swagger
- * tags:
- *   name: User
- *   description: Endpoints related to user authentication and management
- */
-
-/**
- * @swagger
  * /api/v1/login:
  *   post:
  *     summary: Login user
@@ -161,11 +154,9 @@ router.get('/verify-user/:token', verifyUser);
  *       500:
  *         description: Internal Server Error.
  */
-
 router.post('/login', login);
 
 router.post('/resend-verification', resendVerificationEmail);
-
 
 /**
  * @swagger
@@ -184,7 +175,6 @@ router.post('/resend-verification', resendVerificationEmail);
  *       500:
  *         description: Internal Server Error.
  */
-
 router.get('/users', authenticate, getAll);
 
 /**
@@ -215,8 +205,8 @@ router.get('/users', authenticate, getAll);
  *       500:
  *         description: Internal Server Error.
  */
-
 router.patch('/make-admin/:id', authenticate, superAdminAuth, makeAdmin);
+
 /**
  * @swagger
  * /api/v1/google-authenticate:
