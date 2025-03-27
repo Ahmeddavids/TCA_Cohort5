@@ -17,7 +17,7 @@ exports.sendEmail = async (options) => {
     async function main() {
         // send mail with defined transport object
         const info = await transporter.sendMail({
-            from: process.env.APP_USERNAME, // sender address
+            from: `Blog App <${process.env.APP_USERNAME}>`, // sender address
             to: options.email, // list of receivers
             subject: options.subject, // Subject line
             html: options.html, // html body
