@@ -7,7 +7,7 @@ exports.createPost = async (req, res) => {
     try {
         // Extract the ID from the params and create a default variable called userID
         // console.log('Files: ',req.files)
-        const { id: userId } = req.params;
+        const { userId } = req.user;
         // Get the content from the request body
         const { content } = req.body;
         // Find the user by the ID
