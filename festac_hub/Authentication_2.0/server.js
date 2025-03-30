@@ -93,7 +93,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/', (req, res) => {
     res.send('Welcome to the Cloud View Hotel Home Page');
 });
-app.use((error, req, res)=> {
+app.use((error, req, res, next)=> {
 
 })
 
