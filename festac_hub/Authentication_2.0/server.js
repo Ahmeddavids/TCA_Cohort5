@@ -94,7 +94,9 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Cloud View Hotel Home Page');
 });
 app.use((error, req, res, next)=> {
-
+if (condition) {
+    
+}
 })
 
 app.use('/api/v1', roomRouter);
