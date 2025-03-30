@@ -65,7 +65,7 @@ const swaggerDefinition = {
 const options = {
     swaggerDefinition,
     // Paths to files containing OpenAPI definitions
-    apis: ['./routes/*.js','server.js'],
+    apis: ['./routes/*.js', 'server.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -93,10 +93,10 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/', (req, res) => {
     res.send('Welcome to the Cloud View Hotel Home Page');
 });
-app.use((error, req, res, next)=> {
-if (error) {
-    return res.status(400).json({message: error.message})
-}
+app.use((error, req, res, next) => {
+    if (error) {
+        return res.status(400).json({ message: error.message })
+    }
 })
 
 app.use('/api/v1', roomRouter);
