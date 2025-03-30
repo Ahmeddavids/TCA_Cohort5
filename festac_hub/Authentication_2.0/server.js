@@ -93,6 +93,9 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/', (req, res) => {
     res.send('Welcome to the Cloud View Hotel Home Page');
 });
+app.use(()=> {
+    
+})
 
 app.use('/api/v1', roomRouter);
 app.use('/api/v1', categoryRouter);
