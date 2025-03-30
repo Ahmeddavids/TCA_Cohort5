@@ -95,7 +95,7 @@ app.get('/', (req, res) => {
 });
 app.use((error, req, res, next)=> {
 if (error) {
-    
+    return res.status(400)
 }
 })
 
